@@ -1,8 +1,6 @@
 package ru.practicum.shareit.user;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
-import ru.practicum.shareit.exception.ConditionsNotMetException;
 import ru.practicum.shareit.exception.DuplicatedDataException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.model.User;
@@ -10,17 +8,14 @@ import ru.practicum.shareit.user.model.User;
 import java.util.*;
 
 @Slf4j
-@Repository
-public class UserInMemoryRepository implements UserRepository {
+public class UserInMemoryRepository {
     private final Map<Long, User> users = new HashMap<>();
 
-    @Override
     public Collection<User> findAll() {
         log.trace("Получили всех пользователей.");
         return users.values();
     }
 
-    @Override
     public User create(User user) {
         log.trace("Создаем нового пользователя.");
 
@@ -49,7 +44,6 @@ public class UserInMemoryRepository implements UserRepository {
         return ++currentMaxId;
     }
 
-    @Override
     public User update(long userId, User newUser) {
         log.trace("Обновляем данные пользователя.");
 
@@ -80,16 +74,13 @@ public class UserInMemoryRepository implements UserRepository {
         throw new NotFoundException("Юзер с id = " + newUser.getId() + " не найден");
     }
 
-    @Override
     public void delete(long userId) {
         users.remove(userId);
         log.debug("Удалили пользователя.");
     }
 
-    @Override
     public User getById(long id) {
         return Optional.ofNullable(users.get(id))
                 .orElseThrow(() -> new NotFoundException("Юзер с id = " + id + " не найден"));
     }
-
 }

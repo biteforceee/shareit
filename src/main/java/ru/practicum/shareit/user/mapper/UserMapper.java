@@ -15,6 +15,7 @@ public final class UserMapper {
 
     public static User mapToUpdate(User user, UserDto dto) {
         User newUser = new User();
+        newUser.setId(user.getId());
         newUser.setName(user.getName());
         newUser.setEmail(user.getEmail());
 

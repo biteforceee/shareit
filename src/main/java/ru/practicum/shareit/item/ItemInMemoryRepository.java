@@ -7,17 +7,14 @@ import ru.practicum.shareit.item.model.Item;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Repository
-public class ItemInMemoryRepository implements ItemRepository {
+public class ItemInMemoryRepository {
     private final Map<Long, List<Item>> items = new HashMap<>();
     private long idCounter = 1;
 
-    @Override
     public List<Item> findAll(long userId) {
         return items.getOrDefault(userId, Collections.emptyList());
     }
 
-    @Override
     public Item create(long userId, Item item) {
         if (item.getId() == 0) {
             item.setId(idCounter++);
@@ -27,7 +24,6 @@ public class ItemInMemoryRepository implements ItemRepository {
         return item;
     }
 
-    @Override
     public Item getById(long userId, long itemId) {
         List<Item> userItems = items.get(userId);
         if (userItems == null) {
@@ -39,7 +35,6 @@ public class ItemInMemoryRepository implements ItemRepository {
                 .orElseThrow(() -> new NotFoundException("Item with id = " + itemId + " not found"));
     }
 
-    @Override
     public Item update(long itemId, long userId, Item item) {
         List<Item> userItems = items.get(userId);
         if (userItems == null) {
@@ -57,7 +52,6 @@ public class ItemInMemoryRepository implements ItemRepository {
         return item;
     }
 
-    @Override
     public void delete(long userId, long itemId) {
         List<Item> userItems = items.get(userId);
         if (userItems == null) {
@@ -71,7 +65,6 @@ public class ItemInMemoryRepository implements ItemRepository {
         }
     }
 
-    @Override
     public List<Item> searchByTextInDescription(String text) {
         if (text == null || text.isBlank()) {
             return Collections.emptyList();
